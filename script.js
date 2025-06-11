@@ -96,6 +96,80 @@ Object.values(planets).forEach(planet => scene.add(planet.obj));
 // Camera position
 camera.position.z = 50;
 
+// Camera Controls
+const cameraPositions = {
+    default: { x: 0, y: 0, z: 50 },
+    top: { x: 0, y: 50, z: 0 },
+    bottom: { x: 0, y: -50, z: 0 },
+    left: { x: -50, y: 0, z: 0 },
+    right: { x: 50, y: 0, z: 0 },
+    front: { x: 0, y: 0, z: 50 },
+    back: { x: 0, y: 0, z: -50 }
+};
+
+function setCameraPosition(position, duration = 1000) {
+    const startPosition = {
+        x: camera.position.x,
+        y: camera.position.y,
+        z: camera.position.z
+    };
+    
+    const startTime = Date.now();
+    
+    function updateCamera() {
+        const currentTime = Date.now();
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Smooth easing function
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        
+        camera.position.x = startPosition.x + (position.x - startPosition.x) * easeProgress;
+        camera.position.y = startPosition.y + (position.y - startPosition.y) * easeProgress;
+        camera.position.z = startPosition.z + (position.z - startPosition.z) * easeProgress;
+        
+        camera.lookAt(scene.position);
+        
+        if (progress < 1) {
+            requestAnimationFrame(updateCamera);
+        }
+    }
+    
+    updateCamera();
+}
+
+// Keyboard controls for camera views
+window.addEventListener('keydown', (e) => {
+    switch(e.key.toLowerCase()) {
+        case 't': // Top view
+            setCameraPosition(cameraPositions.top);
+            break;
+        case 'b': // Bottom view
+            setCameraPosition(cameraPositions.bottom);
+            break;
+        case 'l': // Left view
+            setCameraPosition(cameraPositions.left);
+            break;
+        case 'r': // Right view
+            setCameraPosition(cameraPositions.right);
+            break;
+        case 'f': // Front view
+            setCameraPosition(cameraPositions.front);
+            break;
+        case 'k': // Back view
+            setCameraPosition(cameraPositions.back);
+            break;
+        case 'd': // Default view
+            setCameraPosition(cameraPositions.default);
+            break;
+    }
+});
+
+// Add double-click handler for resetting to default view
+renderer.domElement.addEventListener('dblclick', () => {
+    setCameraPosition(cameraPositions.default);
+});
+
 // Animation control
 let isPlaying = true;
 
@@ -206,8 +280,19 @@ window.addEventListener('mousemove', (e) => {
     };
 
     const rotationSpeed = 0.005;
-    camera.position.x += deltaMove.x * rotationSpeed;
-    camera.position.y -= deltaMove.y * rotationSpeed;
+    targetRotationX += deltaMove.x * rotationSpeed;
+    targetRotationY += deltaMove.y * rotationSpeed;
+
+    // Smooth camera movement
+    rotationAngleX += (targetRotationX - rotationAngleX) * 0.1;
+    rotationAngleY += (targetRotationY - rotationAngleY) * 0.1;
+
+    // Calculate camera position using spherical coordinates
+    const radius = camera.position.length();
+    camera.position.x = radius * Math.sin(rotationAngleX) * Math.cos(rotationAngleY);
+    camera.position.y = radius * Math.sin(rotationAngleY);
+    camera.position.z = radius * Math.cos(rotationAngleX) * Math.cos(rotationAngleY);
+    
     camera.lookAt(scene.position);
 
     previousMousePosition = {
