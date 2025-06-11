@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive 3D Solar System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="canvas-container"></div>
+    
+    <div id="controls-panel">
+        <button id="togglePlay" class="control-btn">Pause</button>
+        <button id="toggleTheme" class="control-btn">Toggle Theme</button>
+        
+        <div id="speed-controls">
+            <h3>Planet Speed Controls</h3>
+            <div class="planet-control">
+                <label for="mercury">Mercury:</label>
+                <input type="range" id="mercury" min="0" max="2" step="0.1" value="1">
+                <span class="speed-value">1x</span>
+            </div>
+            <div class="planet-control">
+                <label for="venus">Venus:</label>
+                <input type="range" id="venus" min="0" max="2" step="0.1" value="1">
+                <span class="speed-value">1x</span>
+            </div>
+            <div class="planet-control">
+                <label for="earth">Earth:</label>
+                <input type="range" id="earth" min="0" max="2" step="0.1" value="1">
+                <span class="speed-value">1x</span>
+            </div>
+            <div class="planet-control">
+                <label for="mars">Mars:</label>
+                <input type="range" id="mars" min="0" max="2" step="0.1" value="1">
+                <span class="speed-value">1x</span>
+            </div>
+            <div class="planet-control">
+                <label for="jupiter">Jupiter:</label>
+                <input type="range" id="jupiter" min="0" max="2" step="0.1" value="1">
+                <span class="speed-value">1x</span>
+            </div>
+            <div class="planet-control">
+                <label for="saturn">Saturn:</label>
+                <input type="range" id="saturn" min="0" max="2" step="0.1" value="1">
+                <span class="speed-value">1x</span>
+            </div>
+            <div class="planet-control">
+                <label for="uranus">Uranus:</label>
+                <input type="range" id="uranus" min="0" max="2" step="0.1" value="1">
+                <span class="speed-value">1x</span>
+            </div>
+            <div class="planet-control">
+                <label for="neptune">Neptune:</label>
+                <input type="range" id="neptune" min="0" max="2" step="0.1" value="1">
+                <span class="speed-value">1x</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="tooltip"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.154.0/three.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
